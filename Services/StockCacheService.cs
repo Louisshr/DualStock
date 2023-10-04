@@ -38,19 +38,25 @@ namespace DualStock.Services
             try
             {
                 var yahooClient = new YahooClient();
-                var topTrendingList = await yahooClient.GetTopTrendingStocksAsync(Country.UnitedStates, 10);
+                var topTrendingList = await yahooClient.GetTopTrendingStocksAsync(Country.UnitedStates, 10);                
                 var securities = await Yahoo.Symbols(topTrendingList.ToArray()).Fields(Field.Symbol, Field.LongName, Field.RegularMarketPrice, Field.RegularMarketChange, Field.RegularMarketChangePercent).QueryAsync();
                 List<Stock> trendingStocks = new List<Stock>();
-
+                
                 foreach (var security in securities)
                 {
                     try
-                    {
+                    {   
                         var stock = securities[security.Key];
+                        string? currentLongName = null;
+                        // Checking if the field, longName, exists. If not, the current stock will still be made a stock object of,
+                        // but it will not have the correct value in the longName-field, but rather null. 
+                        try { currentLongName = stock[Field.LongName]; }
+                        catch (Exception e) { Console.WriteLine(e); }
+
                         Stock aStock = new Stock()
                         {
                             symbol = stock[Field.Symbol],
-                            longName = stock[Field.LongName],
+                            longName = currentLongName,
                             value = string.Format("{0:0.00}", stock[Field.RegularMarketPrice]),
                             change = string.Format("{0:0.00}", stock[Field.RegularMarketChange]),
                             changePercent = string.Format("{0:0.00}", stock[Field.RegularMarketChangePercent])
@@ -62,10 +68,9 @@ namespace DualStock.Services
                         Console.WriteLine("FEIL");
                         Console.WriteLine(e);
                     }
-                }
-
+                }                               
                 this.stockDTO.trendingStocks = trendingStocks;
-
+                
                 // RETRIEVING STOCKGAINERS            
                 var gainersList = await yahooClient.GetTopGainersAsync(10);
                 var losersList = await yahooClient.GetTopLosersAsync(10);
@@ -105,12 +110,13 @@ namespace DualStock.Services
                     else { this.stockDTO.stockLosers = screener; }
                 }
 
+                /*
                 foreach (var top in trendingStocks) { Console.WriteLine("SYMBOL: " + top.symbol + ", VALUE: " + top.value + ", CHANGE: " + top.change + ", CHANGE P: " + top.changePercent); }
                 Console.WriteLine("g");
                 foreach (var top in this.stockDTO.stockGainers) { Console.WriteLine("SYMBOL: " + top.symbol + ", LONGNAME: " + top.longName + ", VALUE: " + top.value + ", CHANGE: " + top.change + ", CHANGE P: " + top.changePercent); }
                 Console.WriteLine("l");
                 foreach (var top in this.stockDTO.stockLosers) { Console.WriteLine("SYMBOL: " + top.symbol + ", LONGNAME: " + top.longName + ", VALUE: " + top.value + ", CHANGE: " + top.change + ", CHANGE P: " + top.changePercent); }
-
+                */
             }
             catch (Exception e)
             {
