@@ -18,7 +18,7 @@ namespace DualStock.Services
         public StockCacheService()
         {
             Console.WriteLine("STARTING: stockCacheService");                        
-            _timer = new Timer(async _ => await timerCallback(), null, 0, 60000);                                                                
+            _timer = new Timer(async _ => await timerCallback(), null, 0, 300000);                                                                
             //Timer timer = new Timer(async _ => await updateStockCache(), null, 0, 60000);            
             //initializeTest();
             //updateStockCache().GetAwaiter().GetResult();            
@@ -28,8 +28,10 @@ namespace DualStock.Services
         {
             if (!this.isUpdating)
             {
+                Console.WriteLine("STATUS: HENTER AKSJE DATA");
                 this.isUpdating = true;
                 await updateStockCache();
+                //await helloWorld();
             }
         }
 

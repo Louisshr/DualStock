@@ -20,7 +20,13 @@ namespace DualStock.Controllers
         {
             return _db.test();
         }
-       
+
+
+        [HttpGet]
+        public string helloWorld()
+        {
+            return "hello world";
+        }
     }    
 }
 
