@@ -17,9 +17,22 @@ namespace DualStock.Controllers
         }
 
         [HttpGet]
-        public StockData test()
+        public ActionResult<StockData> GetTrendingStocksAndGainersLosers()
         {
-            return _db.test();
+            try
+            {
+                var data = _db.GetTrendingStocksAndGainersLosers();
+                if (data == null)
+                {
+                    return BadRequest("Error when fetching stocktypes: trending, gainer and loser");
+                }
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest("Error when fetching stocktypes: trending, gainer and loser");
+            }            
         }
 
         [HttpGet]

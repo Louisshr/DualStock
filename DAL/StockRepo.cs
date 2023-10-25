@@ -13,11 +13,19 @@ namespace DualStock.DAL
             _stockCacheService = stockCacheService;
         }
 
-        public StockData test()
+        public StockData? GetTrendingStocksAndGainersLosers()
         {
-            //Console.WriteLine("fra repo: ");
-            StockData dto = _stockCacheService.getStockDTO();
-            return dto;
+            try
+            {
+                throw new IndexOutOfRangeException();
+                StockData dto = _stockCacheService.getStockDTO();
+                return dto;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public async Task<HistoricalStockData?> GetHistoricalDataForSpecificStock(string stockSymbol)
