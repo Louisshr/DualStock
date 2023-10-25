@@ -28,10 +28,10 @@ namespace DualStock.Services
         {
             if (!this.isUpdating)
             {
-                Console.WriteLine("STATUS: HENTER AKSJE DATA");
+                //Console.WriteLine("STATUS: HENTER AKSJE DATA");
                 this.isUpdating = true;
-                await updateStockCache();
-                //await helloWorld();
+                //await updateStockCache();
+                await helloWorld();
             }
         }
 
