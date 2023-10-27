@@ -16,8 +16,7 @@ namespace DualStock.DAL
         public StockData? GetTrendingStocksAndGainersLosers()
         {
             try
-            {
-                throw new IndexOutOfRangeException();
+            {               
                 StockData dto = _stockCacheService.getStockDTO();
                 return dto;
             }
@@ -28,14 +27,14 @@ namespace DualStock.DAL
             }
         }
 
-        public async Task<HistoricalStockData?> GetHistoricalDataForSpecificStock(string stockSymbol)
+        public async Task<HistoricalStockData?> GetHistoricalDataForSpecificStock(string ticker)
         {
             try
             {                
                 // Retrieving stock data last five business days
                 DateTime today = DateTime.Today;
                 DateTime twoMonthsBack = today.AddMonths(-2);
-                var historicalData = await Yahoo.GetHistoricalAsync(stockSymbol, twoMonthsBack, today, Period.Daily);
+                var historicalData = await Yahoo.GetHistoricalAsync(ticker, twoMonthsBack, today, Period.Daily);
                 var stockDataLastWeek = historicalData.TakeLast(5);
 
                 // Retrieving stock data last 28 days

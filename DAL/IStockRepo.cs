@@ -7,7 +7,7 @@ namespace DualStock.DAL
     public interface IStockRepo
     {
         StockData? GetTrendingStocksAndGainersLosers();
-        Task<HistoricalStockData?> GetHistoricalDataForSpecificStock(string stockSymbol);        
+        Task<HistoricalStockData?> GetHistoricalDataForSpecificStock(string ticker);        
     }
 }
 

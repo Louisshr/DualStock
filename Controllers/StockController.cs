@@ -4,6 +4,7 @@ using DualStock.Model;
 using DualStock.Model.DTO;
 using Microsoft.AspNetCore.Mvc;
 using YahooFinanceApi;
+using System.Text.RegularExpressions;
 
 namespace DualStock.Controllers
 {
@@ -32,22 +33,27 @@ namespace DualStock.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest("Error when fetching stocktypes: trending, gainer and loser");
-            }            
+            }
         }
 
-        [HttpGet]
-        public async Task<ActionResult<HistoricalStockData>> GetHistoricalDataForSpecificStock()
+        [HttpGet("{ticker}")]
+        public async Task<ActionResult<HistoricalStockData>> GetHistoricalDataForSpecificStock(string ticker)
         {
             try
             {
-                var stock = "AAPL";
-                var historicalData = await _db.GetHistoricalDataForSpecificStock(stock);
+                Regex tickerRegex = new Regex(@"^\S*^[A-Z]*$");
+                if (!tickerRegex.IsMatch(ticker))
+                {
+                    Console.WriteLine("REGEX failed");
+                    return BadRequest("Regular expression test failed");
+                }
+                var historicalData = await _db.GetHistoricalDataForSpecificStock(ticker);
                 if (historicalData == null)
                 {
-                    Console.WriteLine("CONTROLLER: FEIL");
-                    return BadRequest($"failed to fetch stock data for the stock {stock}");
+                    Console.WriteLine("FROM CONTROLLER: Error in controller for method GetHistoricalDataForSpecificStock");
+                    return BadRequest($"failed to fetch stock data for the stock ticker: {ticker}");
                 }
-                return Ok(historicalData); 
+                return Ok(historicalData);
             }
             catch (Exception e)
             {
@@ -60,18 +66,18 @@ namespace DualStock.Controllers
         public string helloWorld()
         {
             return "hello world";
-        }       
+        }
 
         [HttpGet]
         public async Task<string> dateTest2()
         {
-            var historicalData = await Yahoo.GetHistoricalAsync("AAPL", new DateTime(2023,1,1), new DateTime(2023,3,1), Period.Monthly);
+            var historicalData = await Yahoo.GetHistoricalAsync("AAPL", new DateTime(2023, 1, 1), new DateTime(2023, 3, 1), Period.Monthly);
             foreach (var h in historicalData)
             {
                 Console.WriteLine("DATE: " + h.DateTime + ", price: " + h.Open);
             }
             return "OK";
-        }        
+        }                
     }    
 }
 
