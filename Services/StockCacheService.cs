@@ -27,9 +27,9 @@ namespace DualStock.Services
         private async Task timerCallback()
         {
             if (!this.isUpdating)
-            {
-                //Console.WriteLine("STATUS: HENTER AKSJE DATA");
+            {                
                 this.isUpdating = true;
+                //Console.WriteLine("STATUS: HENTER AKSJE DATA");
                 //await updateStockCache();
                 await helloWorld();
             }

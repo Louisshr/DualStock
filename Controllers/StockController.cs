@@ -77,7 +77,7 @@ namespace DualStock.Controllers
                 Console.WriteLine("DATE: " + h.DateTime + ", price: " + h.Open);
             }
             return "OK";
-        }                
+        }        
     }    
 }
 
