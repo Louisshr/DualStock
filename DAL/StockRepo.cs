@@ -64,12 +64,12 @@ namespace DualStock.DAL
                 HistoricalStockDataDTO.daily = stockDataLastWeek;
 
                 // Retrieving stock data last 28 days
-                DateTime yesterday = DateTime.Today;
-                DayOfWeek previousDay = yesterday.DayOfWeek;
+                DateTime currentDate = DateTime.Today;
+                DayOfWeek currentDay = currentDate.DayOfWeek;
 
                 // offset is the number of days to subtract from current day to get to monday               
-                int offset = previousDay == DayOfWeek.Sunday ? 6 : (int)previousDay - (int)DayOfWeek.Monday;                
-                DateTime lastMonday = yesterday.AddDays(-offset);
+                int offset = currentDay == DayOfWeek.Sunday ? 6 : (int)currentDay - (int)DayOfWeek.Monday;                
+                DateTime lastMonday = currentDate.AddDays(-offset);
                 int weeks = 4;
                 DateTime currentMonday = lastMonday.AddDays(-7 * weeks);                
                 List<string> dates = new List<string>();
